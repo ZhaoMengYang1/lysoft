@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.java.dao.PersonDao">
+
+    <select id="selectAll" resultType="Person">
+        select id,name,age,sex,birthday,INET_NTOA(ip in) from person
+    </select>
+
+    <!-- 动态SQL，插入数据，如果数据已存在则更新
+         <trim 去除多余逗号
+          prefix="(" 以 ( 开头
+          suffix=")" 以 ) 结尾
+          ON DUPLICATE KEY UPDATE 如果主键重复(数据已存在) 则更新
+          id=#{person.id},
+     -->
+    <insert id="insertPerson" parameterType="Person">
+    insert into person
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="person.id !=null">id,</if>
+        <if test="person.name !=null">`name`,</if>
+        <if test="person.age !=null">age,</if>
+        <if test="person.sex !=null">sex,</if>
+        <if test="person.birthday !=null">birthday,</if>
+    </trim>
+    <trim prefix="values(" suffix=")" suffixOverrides=",">
+        <if test="person.id !=null">#{person.id},</if>
+        <if test="person.name !=null">#{person.name},</if>
+        <if test="person.age !=null">#{person.age},</if>
+        <if test="person.sex !=null">#{person.sex},</if>
+        <if test="person.birthday !=null">#{person.birthday}</if>
+    </trim>
+        ON DUPLICATE KEY UPDATE
+        <trim prefix="" suffix="" suffixOverrides=",">
+            <if test="person.id !=null">id=#{person.id},</if>
+            <if test="person.name !=null">`name`=#{person.name},</if>
+            <if test="person.age !=null">age=#{person.age},</if>
+            <if test="person.sex !=null">sex=#{person.sex},</if>
+            <if test="person.birthday !=null">birthday=#{person.birthday}</if>
+        </trim>
+
+    </insert>
+    <!--
+    <insert id="insertPerson" parameterType="Person">
+        insert into person
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="person.id !=null">id</if>
+            <if test="person.name !=null">`name`</if>
+            <if test="person.age !=null">age</if>
+            <if test="person.sex !=null">sex</if>
+            <if test="person.birthday !=null">birthday</if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="person.id !=null">#{person.id},</if>
+            <if test="person.name !=null">#{person.name},</if>
+            <if test="person.age !=null">#{person.age},</if>
+            <if test="person.sex !=null">#{person.sex},</if>
+            <if test="person.birthday !=null">#{person.birthday}</if>
+        </trim>
+        ON DUPLICATE KEY UPDATE
+        id=#{person.id},`name`=#{person.name},age=#{person.age},sex=#{person.sex},birthday=#{person.birthday}
+    </insert> -->
+    <!-- 一个参数时，可以不要parameterType -->
+    <!--<insert id="insertPerson">
+        insert into person(id,`name`,age,sex,birthday) values (#{person.id},#{person.name},#{person.age},#{person.sex},#{person.birthday})
+    </insert>-->
+    <!--
+    <insert id="insertPerson" parameterType="Person">
+        insert into person(id,`name`,age,sex,birthday) values (#{person.id},#{person.name},#{person.age},#{person.sex},#{person.birthday})
+    </insert> -->
+</mapper>

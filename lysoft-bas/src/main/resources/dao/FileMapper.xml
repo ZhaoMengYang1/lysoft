@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lysoftbas.dao.FileDao">
+    <select id="findById" parameterType="Integer" resultType="com.lysoftbas.entity.UserFile">
+            select  id,oldFileName,newFileName,ext,path,size,type,isImg,downcounts,uploadTime,userId
+            from t_files
+            where userId=#{id}
+    </select>
+
+    <insert id="save" parameterType="com.lysoftbas.entity.UserFile">
+       insert into t_files
+        values (#{id},#{oldFileName},#{newFileName},
+                #{ext},	#{path},#{size},#{type},
+                #{isImg},#{downcounts},	#{uploadTime},#{userId})
+    </insert>
+
+    <!--根据文件id查询文件-->
+    <!--根据id获取文件信息-->
+    <select id="findByFileId" parameterType="Integer" resultType="com.lysoftbas.entity.UserFile">
+        select id,oldFileName,newFileName,ext,path,size,type,isImg,downcounts,uploadTime,userId
+        from t_files
+        where id = #{fid}
+    </select>
+
+
+    <!--更新下载次数-->
+    <update id="updateDownCounts" parameterType="com.lysoftbas.entity.UserFile">
+                update t_files set downcounts=#{downcounts} where id=#{id}
+    </update>
+
+
+    <!--文件删除-->
+    <delete id="deleteFile" parameterType="integer">
+               delete from t_files where id=#{id}
+    </delete>
+
+</mapper>
+

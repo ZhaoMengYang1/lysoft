@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+<table border="1">
+    <tr>
+        <td>编号</td>
+        <td>用户名</td>
+        <td>地址</td>
+        <td>id</td>
+        <td>名字</td>
+    </tr>
+    <tr th:each="user : ${user}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.age}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.userName}"></td>
+    </tr>
+</table>
+    <button type="button" th:onclick="postList()">发送userInfolist</button>
+</div>
+
+<script th:src="@{/jquery-1.11.3.js}"></script>
+<script>
+    var userInfoList =[];
+    var list=[];
+    var a ={};
+    a.id=1;
+    a.userName="tom";
+    a.password="6666";
+    a.email="654919432@qq.com";
+    a.age=23;
+
+    var b = {};
+    b.id=2;
+    b.userName="jack";
+    b.password="8888";
+    b.email="654919433@qq.com"
+    b.age=25;
+    userInfoList.push(a);
+    userInfoList.push(b);
+    list.push(a);
+    list.push(b);
+    console.log(userInfoList);
+    list=JSON.stringify(list);
+    console.log(list);
+    function postList(){
+        $.ajax({
+            url : '/thymeleaf/listUser',
+            // data : "list="+JSON.stringify(list),
+            data : JSON.stringify(userInfoList),
+            type : "POST",
+            contentType: "application/json",
+            success : function(data) {
+                alert(data);
+            }
+        });
+    }
+
+</script>
+</body>
+</html>
